@@ -4,6 +4,8 @@ from tkinter import *
 import tkinter.filedialog
 import os
 import shutil
+import datetime
+from datetime import timedelta
 
 class ParentWindow(Frame):
     def __init__(self, master):
@@ -76,12 +78,22 @@ class ParentWindow(Frame):
             source_files = os.listdir(source)
             #Runs through each file in the source directory
             for i in source_files:
+                # Get file creation time 
+                creation_time = os.path.getmtime(source + '/' + i)
+                # Get current time 
+                current_time = datetime.datetime.now()
+                # Calculate time difference
+                time_diff = current_time - timedelta(hours=24)
+                newvariable = datetime.datetime.fromtimestamp(creation_time)
+                # Check if the file is created or modified within the last 24 hours
+                if time_diff <= newvariable:
+                
 
-            # Move file from the source to the destination
-                shutil.move(source + '/' + i, destination)
-                print(i + ' was successfully transferred.')
-            else:
-                print(i + ' is not transferred as it is not a new or edited file.')
+                    # Move file from the source to the destination
+                    shutil.move(source + '/' + i, destination)
+                    print(i + ' was successfully transferred.')
+                else:
+                    print(i + ' is not transferred as it is not a new or edited file.')
 
           #Creates function to exit program
     def exit_program(self):
